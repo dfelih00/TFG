@@ -14,11 +14,10 @@ class Imagen:
     tipo = "Desconocido"
 
     #Constructor
-    def __init__(self, numPoints, ruta="", img_nueva=[], blancoNegro=False, pieza="Pieza", tipo="Desconocido"):
+    def __init__(self, ruta="", img_nueva=[], blancoNegro=False, pieza="Pieza", tipo="Desconocido"):
         self.pieza = pieza
         self.tipo = tipo
         self.ruta = ruta
-        self.numPoints = numPoints
         if(len(img_nueva)!=0):
             self.img = img_nueva
         else:
@@ -157,7 +156,9 @@ class Imagen:
         else:
             return self
 
-    def lbp(self, eps=1e-7):
+    def lbp(self, numPoints, radius, eps=1e-7):
+        self.numPoints = numPoints
+        self.radius = radius
         # compute the Local Binary Pattern representation
         # of the image, and then use the LBP representation
         # to build the histogram of patterns
