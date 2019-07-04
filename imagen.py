@@ -162,7 +162,7 @@ class Imagen:
         # compute the Local Binary Pattern representation
         # of the image, and then use the LBP representation
         # to build the histogram of patterns
-        lbp = feature.local_binary_pattern(self.img, self.numPoints, 8, method="uniform")
+        lbp = feature.local_binary_pattern(self.img, numPoints, radius, method="uniform")
         (hist, _) = np.histogram(lbp.ravel(),
             bins=np.arange(0, self.numPoints + 3),
             range=(0, self.numPoints + 2))
