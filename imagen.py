@@ -157,4 +157,4 @@ class Imagen:
 
     def lbp(self):
         img = local_binary_pattern(self.img, 24, 8, method="uniform")
-        return Imagen(self.ruta, img_nueva=img, blancoNegro=False, pieza=self.pieza, tipo=self.tipo)
+        return Imagen(self.ruta, img_nueva=img, blancoNegro=True, pieza=self.pieza, tipo=self.tipo)
