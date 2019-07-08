@@ -1,9 +1,8 @@
 import cv2
 import numpy as np
-from skimage import feature
 from PIL import Image
 from matplotlib import pyplot as plt
-from skimage.feature import greycomatrix, greycoprops
+from skimage.feature import greycomatrix, greycoprops, local_binary_pattern
 
 class Imagen:
 
@@ -156,6 +155,7 @@ class Imagen:
         else:
             return self
 
-    def lbp(self, numPoints, radius):
-        img = feature.local_binary_pattern(self.img, numPoints, radius, method="uniform")
-        return Imagen(self.ruta, img_nueva=img, blancoNegro=True, pieza=self.pieza, tipo=self.tipo)
+    def lbp(self):
+        img = local_binary_pattern(self.img, 24, 8, method="uniform")
+        gray=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        return Imagen(self.ruta, img_nueva=gray, blancoNegro=False, pieza=self.pieza, tipo=self.tipo)
