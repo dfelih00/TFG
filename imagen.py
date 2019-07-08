@@ -157,5 +157,4 @@ class Imagen:
 
     def lbp(self):
         img = local_binary_pattern(self.img, 24, 8, method="uniform")
-        gray=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        return Imagen(self.ruta, img_nueva=gray, blancoNegro=False, pieza=self.pieza, tipo=self.tipo)
+        return Imagen(self.ruta, img_nueva=img, blancoNegro=False, pieza=self.pieza, tipo=self.tipo)
