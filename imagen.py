@@ -155,6 +155,9 @@ class Imagen:
         else:
             return self
 
-    def lbp(self):
-        img = local_binary_pattern(self.img, 24, 8, method="uniform")
+    def lbp(self, numPoints=24, radius=8):
+        img = local_binary_pattern(self.img, numPoints, radius, method="uniform")
+        img = cv2.Sobel(img,cv2.CV_8U,0,1,ksize=9)
+        cv2.imshow("Image", img)
+        cv2.waitKey(0)
         return Imagen(self.ruta, img_nueva=img, blancoNegro=True, pieza=self.pieza, tipo=self.tipo)
