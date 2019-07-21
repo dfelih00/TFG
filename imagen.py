@@ -155,13 +155,24 @@ class Imagen:
         else:
             return self
 
-    def lbp(self, numPoints=24, radius=8):
+    def lbp(self, numPoints=24, radius=8, eps=1e-7):
+        lbp = local_binary_pattern(self.img, numPoints, radius, method="uniform")
+        (hist, _) = np.histogram(lbp.ravel(),
+        bins=np.arange(0, numPoints + 3),
+        range=(0, numPoints + 2))
+        # normalize the histogram
+        hist = hist.astype("float")
+        hist /= (hist.sum() + eps)
+        # return the histogram of Local Binary Patterns
+        return hist
+
+    #def lbp(self, numPoints=24, radius=8):
         #img = self.img
-        img = local_binary_pattern(self.img, numPoints, radius, method="uniform")
-        img = cv2.Sobel(self.img,cv2.CV_8U,0,1,ksize=9)
+        #img = local_binary_pattern(self.img, numPoints, radius, method="uniform")
+        #img = cv2.Sobel(self.img,cv2.CV_8U,0,1,ksize=9)
         #cv2.imshow("Image", img)
         #cv2.waitKey(0)
-        return Imagen(self.ruta, img_nueva=img, blancoNegro=True, pieza=self.pieza, tipo=self.tipo)
+        #return Imagen(self.ruta, img_nueva=img, blancoNegro=True, pieza=self.pieza, tipo=self.tipo)
 
     def blur(self, ksize=24):
         img = cv2.blur(self.img, (10,10)) 
