@@ -12,10 +12,10 @@ def procesarImagen(imagen, lista):
     #Preprocesado
     imagen_preprocesada = imagen.clahe()
     #Area interés
-    imagen_interes = imagen_preprocesada.lbp()
+    imagen_interes = imagen_preprocesada.segmentacionOtsu()
     #Descriptores
     info_partial = [imagen_interes.ruta, imagen_interes.pieza, imagen_interes.tipo]
-    info_partial2 = imagen_interes.get_textura()
+    info_partial2 = imagen_interes.lbp()
     lista.append(info_partial+info_partial2)
 
 #Variables

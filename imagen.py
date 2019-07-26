@@ -1,4 +1,5 @@
 import cv2
+import math
 import numpy as np
 from PIL import Image
 from matplotlib import pyplot as plt
@@ -145,37 +146,56 @@ class Imagen:
         info.append(greycoprops(self.glcm, 'energy')[0][0])
         info.append(greycoprops(self.glcm, 'correlation')[0][0])
         info.append(greycoprops(self.glcm, 'ASM')[0][0])
+        print(info)
         return info
 
     def erosion(self,kernel_size=3, iteraciones=1):
         if self.bN:
             kernel = np.ones((kernel_size,kernel_size),np.uint8)
             transformacion = cv2.erode(self.img,kernel,iterations = iteraciones)
+            cv2.imshow("Image", transformacion)
+            cv2.waitKey(0)
             return Imagen(self.ruta, img_nueva=transformacion, blancoNegro=True, pieza=self.pieza, tipo=self.tipo)
         else:
             return self
 
     def lbp(self, numPoints=24, radius=8, eps=1e-7):
         lbp = local_binary_pattern(self.img, numPoints, radius, method="uniform")
-        (hist, _) = np.histogram(lbp.ravel(),
-        bins=np.arange(0, numPoints + 3),
-        range=(0, numPoints + 2))
-        # normalize the histogram
+        (hist, _) = np.histogram(lbp.ravel(), bins=np.arange(0, numPoints + 3), range=(0, numPoints + 2))
         hist = hist.astype("float")
         hist /= (hist.sum() + eps)
-        # return the histogram of Local Binary Patterns
-        return hist
+        data = []
+        for i in range(0,25):
+            data.append(hist[i])
+        return data
 
-    #def lbp(self, numPoints=24, radius=8):
-        #img = self.img
-        #img = local_binary_pattern(self.img, numPoints, radius, method="uniform")
-        #img = cv2.Sobel(self.img,cv2.CV_8U,0,1,ksize=9)
-        #cv2.imshow("Image", img)
-        #cv2.waitKey(0)
-        #return Imagen(self.ruta, img_nueva=img, blancoNegro=True, pieza=self.pieza, tipo=self.tipo)
+    def moments(self):
+        moments=cv2.moments(self.img)
+        huMoments = cv2.HuMoments(moments).flatten()
+        data=[]
+        for i in range(0,7):
+            huMoments[i] = -1* math.copysign(1.0, huMoments[i]) * math.log10(abs(huMoments[i]))
+            data.append(huMoments[i])
+        return data
 
-    def blur(self, ksize=24):
+    def blur(self):
         img = cv2.blur(self.img, (10,10)) 
-        #cv2.imshow("Image", img)
-        #cv2.waitKey(0)
+        cv2.imshow("Image", img)
+        cv2.waitKey(0)
         return Imagen(self.ruta, img_nueva=img, blancoNegro=True, pieza=self.pieza, tipo=self.tipo)
+
+    def dilate(self,kernel_size=5, iteraciones=1):
+        if self.bN:
+            kernel = np.ones((kernel_size,kernel_size), np.uint8)
+            img = cv2.dilate(self.img, kernel, iterations=1)
+            return Imagen(self.ruta, img_nueva=img, blancoNegro=True, pieza=self.pieza, tipo=self.tipo)
+        else:
+            return self
+
+    def filter2D(self, kernel_size=3):
+        if self.bN:
+            kernel = np.ones((kernel_size,kernel_size), np.uint8)
+            img = cv2.filter2D(self.img, -1, kernel)
+            return Imagen(self.ruta, img_nueva=img, blancoNegro=True, pieza=self.pieza, tipo=self.tipo)
+        else:
+            return self

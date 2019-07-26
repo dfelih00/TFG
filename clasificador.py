@@ -4,6 +4,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.linear_model import Perceptron
+from sklearn.svm import SVC
 
 class Clasificador:
 
@@ -44,5 +45,10 @@ class Clasificador:
 
     def clasificadorPerceptron(self):
         clf = Perceptron(tol=1e-3, random_state=0, validation_fraction=0.35)
+        clf = clf.fit(self.X_train,self.Y_train)
+        self.porcentaje_acierto = clf.score(self.X_test, self.Y_test)*100
+
+    def SVC(self):
+        clf = SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0, decision_function_shape='ovr', degree=3, gamma='auto', kernel='rbf', max_iter=-1, probability=False, random_state=None, shrinking=True, tol=0.001, verbose=False)
         clf = clf.fit(self.X_train,self.Y_train)
         self.porcentaje_acierto = clf.score(self.X_test, self.Y_test)*100

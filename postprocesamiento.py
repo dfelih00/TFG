@@ -51,7 +51,7 @@ df_data_x, df_data_y = getXY(df_data)
 print("Leido "+str(len(ok_data))+" registros Ok y "+str(len(df_data))+" registros Defectos")
 porcentaje = 0.3
 csv_values = []
-csv_values.append(["Porcentaje training","DecisionTreeClassifier","KNeighborsClassifier","RandomForestClassifier","Perceptron"])
+csv_values.append(["Porcentaje training","DecisionTreeClassifier","KNeighborsClassifier","RandomForestClassifier","Perceptron","SVC"])
 while(porcentaje<=0.95):
     print("Porcentaje training "+str(porcentaje*100))
     #Agrupar los datos para el clasificador
@@ -75,6 +75,8 @@ while(porcentaje<=0.95):
     aciertos.append(clasificador.porcentaje_acierto)
     clasificador.clasificadorPerceptron()
     p = clasificador.porcentaje_acierto
+    aciertos.append(clasificador.porcentaje_acierto)
+    clasificador.SVC()
     aciertos.append(clasificador.porcentaje_acierto)
 
     csv_values.append(aciertos)
